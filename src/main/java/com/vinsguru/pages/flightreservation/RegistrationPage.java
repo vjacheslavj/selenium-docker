@@ -1,13 +1,14 @@
 package com.vinsguru.pages.flightreservation;
 
+import com.vinsguru.pages.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class RegistrationPage {
+public class RegistrationPage extends AbstractPage {
 
-    private WebDriver driver;
     @FindBy(id = "firstName")
     private WebElement firstNameInput;
 
@@ -33,8 +34,13 @@ public class RegistrationPage {
     private WebElement registerButton;
 
     public RegistrationPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
+        super(driver);
+    }
+
+    @Override
+    public boolean isAt() {
+        this.wait.until(ExpectedConditions.visibilityOf(firstNameInput));
+        return this.firstNameInput.isDisplayed();
     }
 
     public void goTo(String url) {
