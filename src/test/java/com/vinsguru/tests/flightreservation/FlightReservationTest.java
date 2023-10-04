@@ -1,4 +1,4 @@
-package com.vinsgutu.tests.flightreservation;
+package com.vinsguru.tests.flightreservation;
 
 import com.vinsguru.pages.flightreservation.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -9,19 +9,27 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class FlightReservationTest {
 
     private WebDriver driver;
+    private String noOfPassengers;
+    private String expectedPrice;
 
     @BeforeTest
-    public void setDriver() {
-        WebDriverManager.chromedriver().driverVersion("116.0.5845.111").setup();
-      // System.setProperty("webdriver.chrome.driver", "C:\\Proj\\chromedriver\\chromedriver115.exe");
-      // driver = new ChromeDriver();
-      // driver.manage().window().maximize();
-       this.driver = new ChromeDriver();
+    @Parameters({"noOfPassengers", "expectedPrice"})
+    public void setDriver(String noOfPassengers, String expectedPrice) {
+        this.noOfPassengers = noOfPassengers;
+        this.expectedPrice = expectedPrice;
+
+        // driver setup
+       // WebDriverManager.chromedriver().driverVersion("116.0.5845.111");
+        System.setProperty("webdriver.chrome.driver", "C:\\Proj\\chromedriver\\chromedriver115.exe");
+       // WebDriverManager.chromedriver().setup();
+        this.driver = new ChromeDriver();
+        this.driver.manage().window().maximize();
     }
 
     @Test
@@ -46,7 +54,7 @@ public class FlightReservationTest {
     public void flightsSearchTest() {
         FlightsSearchPage flightsSearchPage = new FlightsSearchPage(driver);
         Assert.assertTrue(flightsSearchPage.isAt());
-        flightsSearchPage.selectPassengers("2");
+        flightsSearchPage.selectPassengers(noOfPassengers);
         flightsSearchPage.searchFlights();
     }
 
@@ -62,7 +70,7 @@ public class FlightReservationTest {
     public void flightReservationConformationTest() {
         FlightConformationPage flightConformationPage = new FlightConformationPage(driver);
         Assert.assertTrue(flightConformationPage.isAt());
-        Assert.assertEquals(flightConformationPage.getPrice(), "$1169 USD");
+        Assert.assertEquals(flightConformationPage.getPrice(), expectedPrice);
     }
 
     @AfterTest
