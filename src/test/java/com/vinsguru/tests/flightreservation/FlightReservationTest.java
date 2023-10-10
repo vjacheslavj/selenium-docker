@@ -1,35 +1,22 @@
 package com.vinsguru.tests.flightreservation;
 
 import com.vinsguru.pages.flightreservation.*;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import com.vinsguru.tests.AbstractTest;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-public class FlightReservationTest {
+public class FlightReservationTest extends AbstractTest {
 
-    private WebDriver driver;
     private String noOfPassengers;
     private String expectedPrice;
 
     @BeforeTest
     @Parameters({"noOfPassengers", "expectedPrice"})
-    public void setDriver(String noOfPassengers, String expectedPrice) {
+    public void setParameters(String noOfPassengers, String expectedPrice) {
         this.noOfPassengers = noOfPassengers;
         this.expectedPrice = expectedPrice;
-
-        // driver setup
-       // WebDriverManager.chromedriver().driverVersion("116.0.5845.111");
-        System.setProperty("webdriver.chrome.driver", "C:\\Proj\\chromedriver\\chromedriver115.exe");
-       // WebDriverManager.chromedriver().setup();
-        this.driver = new ChromeDriver();
-        this.driver.manage().window().maximize();
     }
 
     @Test
@@ -71,10 +58,5 @@ public class FlightReservationTest {
         FlightConformationPage flightConformationPage = new FlightConformationPage(driver);
         Assert.assertTrue(flightConformationPage.isAt());
         Assert.assertEquals(flightConformationPage.getPrice(), expectedPrice);
-    }
-
-    @AfterTest
-    public void quitDriver() {
-        this.driver.quit();
     }
 }
