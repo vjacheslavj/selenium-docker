@@ -78,8 +78,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven.surefire.version}</version>
         <configuration>
+          <!-- mvn clean test -Dbrowser=chrome -Dselenium.grid.enabled=true -->
           <systemPropertyVariables>
-            <browser>chrome</browser>
+            <browser>firefox</browser>
             <selenium.grid.enabled>true</selenium.grid.enabled>
           </systemPropertyVariables>
           <suiteXmlFiles>
@@ -150,4 +151,6 @@
       </plugin>
     </plugins>
   </build>
+
+
 </project>
