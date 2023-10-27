@@ -4,6 +4,8 @@ import com.vinsguru.pages.vendorportal.DashboardPage;
 import com.vinsguru.pages.vendorportal.LoginPage;
 import com.vinsguru.tests.AbstractTest;
 import com.vinsguru.tests.vendorportal.model.VendorPortalTestData;
+import com.vinsguru.util.Config;
+import com.vinsguru.util.Constants;
 import com.vinsguru.util.JsonUtil;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
@@ -26,7 +28,7 @@ public class VendorPortalTest extends AbstractTest {
 
     @Test
     public void loginTest() {
-        loginPage.goTo("https://d1uh9e7cu07ukd.cloudfront.net/selenium-docker/vendor-app/index.html");
+        loginPage.goTo(Config.get(Constants.VENDOR_PORTAL_URL));
         Assert.assertTrue(loginPage.isAt());
         loginPage.login(testData.getUsername(), testData.getPassword());
     }
