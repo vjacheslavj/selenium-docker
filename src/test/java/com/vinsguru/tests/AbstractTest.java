@@ -1,6 +1,7 @@
 package com.vinsguru.tests;
 
 import com.google.common.util.concurrent.Uninterruptibles;
+import com.vinsguru.listener.TestListener;
 import com.vinsguru.pages.vendorportal.DashboardPage;
 import com.vinsguru.pages.vendorportal.LoginPage;
 import com.vinsguru.util.Config;
@@ -14,15 +15,14 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
+import org.testng.ITestContext;
+import org.testng.annotations.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 
+@Listeners({TestListener.class})
 public abstract class AbstractTest {
 
     @BeforeSuite
@@ -35,13 +35,14 @@ public abstract class AbstractTest {
     protected WebDriver driver;
 
     @BeforeTest
-    public void setDriver() throws MalformedURLException {
+    public void setDriver(ITestContext ctx) throws MalformedURLException {
         if (Boolean.parseBoolean(Config.get(Constants.GRID_ENABLED))) {
             this.driver = getRemoteDriver();
         } else {
             this.driver = getLocalDriver();
             this.driver.manage().window().maximize();
         }
+        ctx.setAttribute(Constants.DRIVER, this.driver);
     }
 
     private WebDriver getRemoteDriver() throws MalformedURLException {
