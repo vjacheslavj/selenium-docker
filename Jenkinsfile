@@ -12,7 +12,7 @@ pipeline{
 
         stage('Build Image'){
             steps{
-                sh "docker build -t=vjaceslavsjer/selenium:latest ."
+                sh "docker build -t=vjaceslavsjer/selenium ."
             }
         }
 
