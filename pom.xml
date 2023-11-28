@@ -1,14 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress VulnerableLibrariesLocal -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
   <artifactId>selenium-docker</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
-
-  <name>selenium-docker</name>
-  <url>http://maven.apache.org</url>
 
   <properties>
     <selenium.java.version>4.11.0</selenium.java.version>
@@ -80,14 +79,14 @@
         <configuration>
           <!-- mvn clean test -Dbrowser=chrome -Dselenium.grid.enabled=true -->
           <systemPropertyVariables>
-            <browser>chrome</browser>
-            <selenium.grid.enabled>false</selenium.grid.enabled>
+            <browser>firefox</browser>
+            <selenium.grid.enabled>true</selenium.grid.enabled>
           </systemPropertyVariables>
           <suiteXmlFiles>
             <file>src/test/resources/test-suites/vendor-portal.xml</file>
             <file>src/test/resources/test-suites/flight-reservation.xml</file>
           </suiteXmlFiles>
-          <threadCount>2</threadCount>
+          <threadCount>4</threadCount>
           <reportsDirectory>target/test-output</reportsDirectory>
         </configuration>
       </plugin>
@@ -148,12 +147,6 @@
                 <resource>
                   <directory>src/test/resources</directory>
                 </resource>
-<!--                <resource>-->
-<!--                  <directory>.</directory>-->
-<!--                  <includes>-->
-<!--                    <include>dummy.txt</include>-->
-<!--                  </includes>-->
-<!--                </resource>-->
               </resources>
             </configuration>
           </execution>
