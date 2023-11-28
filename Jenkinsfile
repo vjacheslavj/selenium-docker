@@ -2,30 +2,26 @@ pipeline{
 
     agent any
 
+    parameters {
+        choice choices: ['chrome', 'firefox'], description: 'Select the browser', name: 'BROWSER'
+    }
+
     stages{
 
-        stage('Build Jar'){
+        stage('Start Grid'){
             steps{
-                sh "mvn clean package -DskipTests"
+                sh "docker-compose -f grid.yaml up --scale ${params.BROWSER}=2 -d"
             }
         }
 
-        stage('Build Image'){
+        stage('Run Test'){
             steps{
-                sh "docker build -t=vjaceslavsjer/selenium:latest ."
-            }
-        }
-
-        stage('Push Image'){
-            environment{
-                DOCKER_HUB = credentials('dockerhub-creds')
-            }
-            steps{
-                sh 'echo ${DOCKER_HUB_PSW} | docker login -u ${DOCKER_HUB_USR} --password-stdin'
-                sh "docker push vjaceslavsjer/selenium:latest"
-                sh "docker tag vjaceslavsjer/selenium:latest vjaceslavsjer/selenium:${env.BUILD_NUMBER}"
-                sh "docker push vjaceslavsjer/selenium:${env.BUILD_NUMBER}"
-
+                sh "docker-compose -f test-suites.yaml up --pull=always"
+                script {
+                    if(fileExists('output/flight-reservation/testng-failed.xml') || fileExists('output/vendor-portal/testng-failed.xml')){
+                        error('failed tests found')
+                    }
+                }
             }
         }
 
@@ -33,7 +29,11 @@ pipeline{
 
     post {
         always {
-            sh "docker logout"
+            sh "docker-compose -f grid.yaml down"
+            sh "docker-compose -f test-suites.yaml down"
+            archiveArtifacts artifacts: 'output/flight-reservation/emailable-report.html', followSymlinks: false
+            archiveArtifacts artifacts: 'output/vendor-portal/emailable-report.html', followSymlinks: false
         }
     }
+
 }
