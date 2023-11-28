@@ -80,14 +80,14 @@
         <configuration>
           <!-- mvn clean test -Dbrowser=chrome -Dselenium.grid.enabled=true -->
           <systemPropertyVariables>
-            <browser>chrome</browser>
-            <selenium.grid.enabled>false</selenium.grid.enabled>
+            <browser>firefox</browser>
+            <selenium.grid.enabled>true</selenium.grid.enabled>
           </systemPropertyVariables>
           <suiteXmlFiles>
             <file>src/test/resources/test-suites/vendor-portal.xml</file>
             <file>src/test/resources/test-suites/flight-reservation.xml</file>
           </suiteXmlFiles>
-          <threadCount>2</threadCount>
+          <threadCount>4</threadCount>
           <reportsDirectory>target/test-output</reportsDirectory>
         </configuration>
       </plugin>
@@ -148,12 +148,6 @@
                 <resource>
                   <directory>src/test/resources</directory>
                 </resource>
-<!--                <resource>-->
-<!--                  <directory>.</directory>-->
-<!--                  <includes>-->
-<!--                    <include>dummy.txt</include>-->
-<!--                  </includes>-->
-<!--                </resource>-->
               </resources>
             </configuration>
           </execution>
